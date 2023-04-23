@@ -1,6 +1,7 @@
 const getState = ({ getStore, getActions, setStore }) => {
 	return {
 		store: {
+			token: null,
 			message: null,
 			demo: [
 				{
@@ -21,7 +22,32 @@ const getState = ({ getStore, getActions, setStore }) => {
 				getActions().changeColor(0, "green");
 			},
 
-			getMessage: async () => {
+			syncTokenSessionStore: () => {
+				const token = sessionStorage.getItem("token");
+				if(token && token !="" && token != undefined) setStore({ token: token });
+			},
+
+			logout: () => {
+				sessionStorage.remoteItem("token");
+				setStore({token: null});
+			},
+
+			login: async (email, password) => {
+				const mthds = {
+					method: 'POST',
+					headers: {
+						"Content-Type": "application/json"
+					},
+					body: JSON.stringify({
+						email: email,
+						password: password
+					})
+				};
+				try{
+					const resp = await fetch("")
+				}
+			},
+				getMessage: async () => {
 				try{
 					// fetching data from the backend
 					const resp = await fetch(process.env.BACKEND_URL + "/api/hello")
